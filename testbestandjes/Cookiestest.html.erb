@@ -4,36 +4,61 @@ class BlogPostsController < ApplicationController
 
 
     def like
-    @blog_post = BlogPost.find(params[:id])
+        @blog_post = BlogPost.find(params[:id])
 
-    if session[:liked_blog_posts]&.include?(@blog_post.id)
-      flash[:alert] = 'You have already liked this blog post.'
-    else
-      @blog_post.increment!(:likes)
-      session[:liked_blog_posts] ||= []
-      session[:liked_blog_posts] << @blog_post.id
+        unless cookies[:like_blog_posts]
+            cookies[:like_blog_posts] = []
+        end
 
-      flash[:notice] = 'Blog post liked.'
-    end
+        unless cookies[:like_blog_posts].include?(@blog_post.id)
+          @blog_post.increment!(:likes)
+          cookies[:like_blog_posts] << @blog_post.id
 
-    redirect_to @blog_post
-  end
+          puts("toevoegin")
+          puts(cookies[:like_blog_posts])
 
-  def unlike
-    @blog_post = BlogPost.find(params[:id])
+          flash[:notice] = 'Blog post liked.'
+        else
+          flash[:alert] = 'You have already liked this blog post.'
+        end
 
-    if session[:liked_blog_posts]&.include?(@blog_post.id)
-      @blog_post.decrement!(:likes)
-      session[:liked_blog_posts].delete(@blog_post.id)
+        redirect_to @blog_post
+      end
 
-      flash[:notice] = 'Blog post unliked.'
-    else
-      flash[:alert] = 'You have not liked this blog post.'
-    end
+      def debug
+            cookies[:jemoeder] = []
 
-    redirect_to @blog_post
-  end
+            cookies[:jemoeder] << 21
+            cookies[:jemoeder] << 23
 
+            if cookies[:jemoeder].include?(21)
+                puts("Ja hoor");
+            else
+                puts("nee hoor");
+            end
+
+
+            puts(cookies[:jemoeder])
+      end
+
+
+      def unlike
+        @blog_post = BlogPost.find(params[:id])
+
+        puts("asdasas")
+        puts(cookies[:like_blog_posts])
+
+        if cookies[:like_blog_posts].include?(@blog_post.id)
+          @blog_post.decrement!(:likes)
+          cookies[:like_blog_posts].delete(@blog_post.id)
+
+          flash[:notice] = 'Blog post unliked.'
+        else
+          flash[:alert] = 'You have not liked this blog post.'
+        end
+
+        redirect_to @blog_post
+      end
 
     #def like
      #   @blog_post.increment!(:likes)

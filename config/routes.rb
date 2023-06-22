@@ -16,6 +16,12 @@ Rails.application.routes.draw do
 
   post "blog_posts", to: "blog_posts#create", as: :blog_posts
 
+  patch "/blog_posts/:id/like", to: "blog_posts#like", as: :like_blog_post
+
+  delete "/blog_posts/:id/like", to: "blog_posts#unlike", as: :unlike_blog_post
+
+  get "/debug", to: "blog_posts#debug"
+
   # Defines the root path route ("/")
   root "blog_posts#index"
 end

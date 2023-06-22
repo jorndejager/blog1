@@ -1,0 +1,10 @@
+<h2> <%= @blog_post.likes %></h2>
+
+<%= button_to "like", like_blog_post_path(@blog_post), method: :patch %>
+
+<%= button_to "unlike", like_blog_post_path(@blog_post), method: :delete %>
+
+
+
+
+
